@@ -10,7 +10,7 @@ const Autocomplete = ({ placeChanged })=> {
   }, [el]);
 
   return (
-    <input ref={ el }/>
+    <input ref={ el } style={{ height: '2rem', width: '100%'}}/>
   );
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Home from './Home';
 import Login from './Login';
 import Autocomplete from './Autocomplete';
@@ -9,10 +9,30 @@ import { Link, Routes, Route } from 'react-router-dom';
 
 const App = ()=> {
   const { auth } = useSelector(state => state);
+  const [place, setPlace ] = useState();
+  const [map, setMap] = useState();
+  const el = useRef();
   const dispatch = useDispatch();
   useEffect(()=> {
     dispatch(loginWithToken());
   }, []);
+
+  useEffect(()=> {
+    if(place){
+      console.log(place.geometry.location.lat());
+      console.log(place.geometry.location.lng());
+      map.setCenter(place.geometry.location);
+    }
+  }, [place]);
+
+  useEffect(()=> {
+    console.log(el.current);
+    const map = new google.maps.Map(el.current, {
+      center: { lat: -34.397, lng: 150.644 },
+      zoom: 10,
+    });
+    setMap(map);
+  }, [el]);
 
   return (
     <div>
@@ -29,9 +49,8 @@ const App = ()=> {
           </div>
         )
       }
-      <Autocomplete placeChanged={ place => console.log(place)}/>
-      <Autocomplete placeChanged={ place => console.log(place)}/>
-      <Autocomplete placeChanged={ place => console.log(place)}/>
+      <Autocomplete placeChanged={ place => setPlace(place)}/>
+      <div ref={ el } style={{ height: '300px'}}/>
     </div>
   );
 };
