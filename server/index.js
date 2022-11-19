@@ -1,3 +1,12 @@
+try {
+  require('../secrets.js');
+}
+catch(ex){
+  console.log(ex);
+  console.log(`
+  SET environment variable for API_KEY
+    `);
+}
 const app = require('./app');
 const { syncAndSeed } = require('./db');
 
